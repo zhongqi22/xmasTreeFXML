@@ -61,15 +61,16 @@ public class DateTimeReader implements Subject {
         try{
             p.load(ClassLoader.getSystemResourceAsStream("christmas.properties"));
             bgProperty = p.getProperty("Background");
-            System.out.println(bgProperty);
         } catch (IOException e){
             System.out.println("Error in properties file");
         }
+        p.clear();
         
         return bgProperty;
     }
     
     public void setPeriod(){
         this.period = this.getPeriod();
+        System.out.println(period);
     }
 }

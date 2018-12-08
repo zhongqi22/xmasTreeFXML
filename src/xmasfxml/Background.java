@@ -73,7 +73,7 @@ public class Background implements Observer {
         this.curTime = time;
         this.bgProperty = period;
         System.out.println("curtime: "+time);
-        System.out.println("period" + bgProperty);
+        System.out.println("period " + bgProperty);
         if(bgState!= null){
             refresh();
         }
