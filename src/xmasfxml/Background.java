@@ -71,7 +71,7 @@ public class Background implements Observer {
     @Override
     public void update(long time, String period) {
         this.curTime = time;
-        this.bgProperty = period;
+        setBgProperty(period);
         System.out.println("curtime: "+time);
         System.out.println("period " + bgProperty);
         if(bgState!= null){
