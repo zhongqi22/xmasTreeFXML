@@ -25,10 +25,11 @@ public class DateTimeReader implements Subject {
     public long time;
     public String period;
     
-    private static PropertiesConfiguration configuration = null;
+    private PropertiesConfiguration configuration;
 
     public DateTimeReader(){
         observers = new ArrayList<Observer>();
+        loadConfig();
     }
     
     @Override
@@ -64,17 +65,16 @@ public class DateTimeReader implements Subject {
     
     public String getPeriod(){
         String bgProperty = "";
-        reloadConfig();
         bgProperty = getProperty("Background");
-        
         return bgProperty;
     }
     
-    public static synchronized String getProperty(final String key) {
+    public String getProperty(final String key) {
+        configuration.reload();
         return (String)configuration.getProperty(key);
     }
     
-    public static void reloadConfig () {
+    public void loadConfig () {
         try {
             configuration = new PropertiesConfiguration("christmas.properties");
             configuration.setReloadingStrategy(new FileChangedReloadingStrategy());
