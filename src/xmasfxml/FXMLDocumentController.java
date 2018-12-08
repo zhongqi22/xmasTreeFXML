@@ -11,8 +11,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import com.jfoenix.controls.*;
+import java.io.File;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.PathTransition;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.CubicCurve;
+import javafx.util.Duration;
 
 /**
  *
@@ -23,23 +32,24 @@ public class FXMLDocumentController implements Initializable {
     private Ornament ornament;
     private Light light;
     private Present present;
-
+    private Background background;
     private DateTimeReader dateTimeReader;
-
     private RemoteControl rc;
     private CommandHistory ch;
-
+    private MediaPlayer mediaPlayer;
+    private boolean party = false;
+    
     @FXML
     private Group ornamentsGroup;
     @FXML
     private Group lightsGroup;
     @FXML
     private Group presentsGroup;
-
-    private Background background;
+    @FXML 
+    private Group lightsGroupFlashing;
+    
     @FXML
     private ImageView treeBackground;
-
     @FXML
     private JFXToggleButton ornamentsToggleBtn;
     @FXML
@@ -48,10 +58,12 @@ public class FXMLDocumentController implements Initializable {
     private JFXToggleButton presentsToggleBtn;
     @FXML
     private JFXToggleButton addAllToggleBtn;
-
+    @FXML
+    private JFXToggleButton partyButton;
+    @FXML
+    private ImageView santaPic;
     @FXML
     Button exitBtn;
-
     @FXML
     private void exitSystem() {
         System.exit(0);
@@ -63,8 +75,17 @@ public class FXMLDocumentController implements Initializable {
         this.toggleOrnaments();
         if (toggled) {
             showOrnaments();
+            
+            // check if other toggle is on, then auto set the toggle all to true;
+            if (this.lightsToggleBtn.selectedProperty().asObject().getValue()
+                    && this.presentsToggleBtn.selectedProperty().asObject().getValue()) {
+                this.addAllToggleBtn.setSelected(true);
+            }
         } else {
             hideOrnaments();
+            if(this.addAllToggleBtn.selectedProperty().asObject().getValue()){
+                this.addAllToggleBtn.setSelected(false);
+            }
         }
     }
 
@@ -74,8 +95,16 @@ public class FXMLDocumentController implements Initializable {
         this.toggleLights();
         if (toggled) {
             showLights();
+            // check if other toggle is on, then auto set the toggle all to true;
+            if (this.ornamentsToggleBtn.selectedProperty().asObject().getValue()
+                    && this.presentsToggleBtn.selectedProperty().asObject().getValue()) {
+                this.addAllToggleBtn.setSelected(true);
+            }
         } else {
             hideLights();
+            if(this.addAllToggleBtn.selectedProperty().asObject().getValue()){
+                this.addAllToggleBtn.setSelected(false);
+            }
         }
     }
 
@@ -85,8 +114,17 @@ public class FXMLDocumentController implements Initializable {
         this.togglePresents();
         if (toggled) {
             showPresents();
+            
+            // check if other toggle is on, then auto set the toggle all to true;
+            if (this.lightsToggleBtn.selectedProperty().asObject().getValue()
+                    && this.ornamentsToggleBtn.selectedProperty().asObject().getValue()) {
+                this.addAllToggleBtn.setSelected(true);
+            }
         } else {
             hidePresents();
+            if(this.addAllToggleBtn.selectedProperty().asObject().getValue()){
+                this.addAllToggleBtn.setSelected(false);
+            }
         }
     }
 
@@ -115,6 +153,26 @@ public class FXMLDocumentController implements Initializable {
             this.onOrnamentToggleChange();
         }
 
+    }
+    
+    @FXML
+    public void togglePartyMode() {
+        party = ! party;
+        
+        if (party) {
+            playMusic();
+            
+            animateSanta();
+            
+            flashingChristmasLight();
+            
+        } else {
+            stopMusic();
+            
+            hideSanta();
+            
+            stopFlashingChristmasLight();
+        }
     }
 
     @Override
@@ -198,6 +256,56 @@ public class FXMLDocumentController implements Initializable {
             log = rc.hideButtonPushed(2);
         }
         ch.log(log);
+    }
+    
+    public void playMusic() {
+        Media song = new Media(new File("src/jingle-bells-country.mp3").toURI().toString());
+        mediaPlayer = new MediaPlayer(song);
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+
+            @Override
+            public void run() {
+                mediaPlayer.seek(Duration.ZERO);
+            }
+        });
+
+        mediaPlayer.play();
+    }
+    
+    public void animateSanta() {
+        Image image = new Image("santa1.png");
+        santaPic.setImage(image);
+        santaPic.setVisible(true);
+
+        CubicCurve curve = new CubicCurve(203, 254, -50, 164, 162, -23, -200, -94);
+
+        PathTransition transition = new PathTransition();
+        transition.setNode(santaPic);
+        transition.setDuration(Duration.seconds(3));
+        transition.setPath(curve);
+        transition.setCycleCount(PathTransition.INDEFINITE);
+        transition.play();
+    }
+    
+    private void stopMusic() {
+        mediaPlayer.stop();
+    }
+
+    private void hideSanta() {
+        santaPic.setVisible(false);
+    }
+    
+    private void flashingChristmasLight() {
+        lightsGroupFlashing.setVisible(true);
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), lightsGroupFlashing);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setCycleCount(Animation.INDEFINITE);
+        fadeTransition.play();
+    }
+    
+    public void stopFlashingChristmasLight() {
+        lightsGroupFlashing.setVisible(false);
     }
 
 }

@@ -163,12 +163,63 @@
                   </ImageView>
                </children>
             </Group>
+            <ImageView fx:id="santaPic" fitHeight="150.0" fitWidth="200.0" layoutX="423.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+            <Group fx:id="lightsGroupFlashing" layoutX="183.0" layoutY="180.0" visible="false">
+               <children>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutX="71.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutX="155.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutX="58.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutX="169.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutX="16.0" layoutY="245.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutX="113.0" layoutY="308.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutX="223.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="85.0" fitWidth="103.0" layoutX="101.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../light.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
          </children>
       </Pane>
       <JFXToggleButton fx:id="lightsToggleBtn" layoutX="8.0" layoutY="6.0" onAction="#onLightToggleChange" text="Lights" />
       <JFXToggleButton fx:id="ornamentsToggleBtn" layoutX="8.0" layoutY="66.0" onAction="#onOrnamentToggleChange" text="Ornaments" />
       <JFXToggleButton fx:id="presentsToggleBtn" layoutX="8.0" layoutY="126.0" onAction="#onPresentsToggleChange" text="Presents" />
       <JFXToggleButton fx:id="addAllToggleBtn" layoutX="8.0" layoutY="186.0" onAction="#onAddAllToggleChange" text="Add All" />
-      <Button fx:id="exitBtn" layoutX="174.0" layoutY="261.0" mnemonicParsing="false" onAction="#exitSystem" text="EXIT" />
+      <Button fx:id="exitBtn" layoutX="180.0" layoutY="347.0" mnemonicParsing="false" onAction="#exitSystem" text="EXIT" />
+      <JFXToggleButton fx:id="partyButton" layoutX="8.0" layoutY="244.0" onAction="#togglePartyMode" text="Party Mode" toggleColor="#c51162" toggleLineColor="#8e0038" unToggleColor="#f48fb1" unToggleLineColor="#c9b2ba" />
     </children>
 </AnchorPane>
