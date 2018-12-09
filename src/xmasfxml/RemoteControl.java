@@ -28,7 +28,8 @@ public class RemoteControl {
         Iterator<Command> iter = showCommands.createIterator();
         while(iter.hasNext()) {
             Command c = iter.next();
-            c.execute();
+            String log = c.execute();
+            System.out.println(log);
         }
         return "All decorations are shown";
     }
@@ -37,7 +38,8 @@ public class RemoteControl {
         Iterator<Command> iter = hideCommands.createIterator();
         while(iter.hasNext()) {
             Command c = iter.next();
-            c.execute();
+            String log = c.execute();
+            System.out.println(log);
         }
         return "All decorations are hidden";
     }

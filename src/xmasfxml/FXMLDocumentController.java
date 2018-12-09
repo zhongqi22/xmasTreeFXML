@@ -135,6 +135,7 @@ public class FXMLDocumentController implements Initializable {
     private void onAddAllToggleChange() {
         Boolean toggled = this.addAllToggleBtn.selectedProperty().asObject().getValue();
         updateTime();
+        this.toggleAll();
         if (toggled) {
             if (!this.presentsToggleBtn.selectedProperty().asObject().getValue()) {
                 this.presentsToggleBtn.setSelected(true);
@@ -263,6 +264,19 @@ public class FXMLDocumentController implements Initializable {
             log = rc.showButtonPushed(2);
         } else {
             log = rc.hideButtonPushed(2);
+        }
+        ch.log(log);
+    }
+    
+    private void toggleAll() {
+        String log = "";
+        System.out.println(light.isLight() + " " + present.isPresent() + " " + ornament.isOrnament());
+        if (light.isLight() && present.isPresent() && ornament.isOrnament()) {
+            log = rc.hideAll();
+            System.out.println("Hidden all");
+        } else {
+            log = rc.showAll();
+            System.out.println("Show all");
         }
         ch.log(log);
     }
