@@ -26,18 +26,24 @@ public class RemoteControl {
     
     public String showAll () {
         Iterator<Command> iter = showCommands.createIterator();
+        System.out.println("Inside show all");
+        int index = 0;
         while(iter.hasNext()) {
             Command c = iter.next();
             c.execute();
+            showButtonPushed(index++);
         }
         return "All decorations are shown";
     }
     
     public String hideAll () {
         Iterator<Command> iter = hideCommands.createIterator();
+        System.out.println("Inside hide all");
+        int index = 0;
         while(iter.hasNext()) {
             Command c = iter.next();
             c.execute();
+            hideButtonPushed(index++);
         }
         return "All decorations are hidden";
     }

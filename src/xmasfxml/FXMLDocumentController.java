@@ -72,6 +72,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void onOrnamentToggleChange() {
         Boolean toggled = this.ornamentsToggleBtn.selectedProperty().asObject().getValue();
+        updateTime();
         this.toggleOrnaments();
         if (toggled) {
             showOrnaments();
@@ -92,6 +93,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void onLightToggleChange() {
         Boolean toggled = this.lightsToggleBtn.selectedProperty().asObject().getValue();
+        updateTime();
         this.toggleLights();
         if (toggled) {
             showLights();
@@ -111,6 +113,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void onPresentsToggleChange() {
         Boolean toggled = this.presentsToggleBtn.selectedProperty().asObject().getValue();
+        updateTime();
         this.togglePresents();
         if (toggled) {
             showPresents();
@@ -131,6 +134,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void onAddAllToggleChange() {
         Boolean toggled = this.addAllToggleBtn.selectedProperty().asObject().getValue();
+        updateTime();
+        this.toggleAll();
         if (toggled) {
             if (!this.presentsToggleBtn.selectedProperty().asObject().getValue()) {
                 this.presentsToggleBtn.setSelected(true);
@@ -227,6 +232,11 @@ public class FXMLDocumentController implements Initializable {
     private void hidePresents() {
         this.presentsGroup.setVisible(false);
     }
+    
+    public void updateTime() {
+        long time = System.currentTimeMillis();
+        dateTimeReader.setTime(time);
+    }
 
     private void toggleOrnaments() {
         String log = "";
@@ -254,6 +264,19 @@ public class FXMLDocumentController implements Initializable {
             log = rc.showButtonPushed(2);
         } else {
             log = rc.hideButtonPushed(2);
+        }
+        ch.log(log);
+    }
+    
+    private void toggleAll() {
+        String log = "";
+        System.out.println(light.isLight() + " " + present.isPresent() + " " + ornament.isOrnament());
+        if (light.isLight() && present.isPresent() && ornament.isOrnament()) {
+            log = rc.hideAll();
+            System.out.println("Hidden all");
+        } else {
+            log = rc.showAll();
+            System.out.println("Show all");
         }
         ch.log(log);
     }
