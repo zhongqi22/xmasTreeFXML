@@ -86,6 +86,5 @@ public class DateTimeReader implements Subject {
     
     public void setPeriod(){
         this.period = this.getPeriod();
-        System.out.println(period);
     }
 }
