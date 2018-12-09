@@ -10,8 +10,6 @@ import javafx.scene.image.ImageView;
 public class Background implements Observer {
     private ImageView treeBackground;
     private DateTimeReader dateTimeReader;
-    
-    private BackgroundStateFactory bgFactory;
       
     private BackgroundState bgDayState = new BackgroundDayState(this);
     private BackgroundState bgSunriseState;
@@ -24,12 +22,10 @@ public class Background implements Observer {
     long curTime = 0;
     
     public Background(DateTimeReader dateTimeReader, ImageView treeBackground){
-        bgFactory = new BackgroundStateFactory (this);
-        
-        bgDayState = bgFactory.createBgState("DAY", this);
-        bgSunriseState = bgFactory.createBgState("SUNRISE", this);
-        bgSunsetState = bgFactory.createBgState("SUNSET", this);
-        bgNightState = bgFactory.createBgState("NIGHT", this);
+        bgDayState = new BackgroundDayState(this);
+        bgSunriseState = new BackgroundSunriseState(this);
+        bgSunsetState = new BackgroundSunsetState(this);
+        bgNightState = new BackgroundNightState(this);
         
         this.treeBackground = treeBackground;
                 
@@ -75,7 +71,9 @@ public class Background implements Observer {
     @Override
     public void update(long time, String period) {
         this.curTime = time;
-        setBgProperty(period);
+        this.bgProperty = period;
+        System.out.println("curtime: "+time);
+        System.out.println("period" + bgProperty);
         if(bgState!= null){
             refresh();
         }
