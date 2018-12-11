@@ -5,6 +5,7 @@
  */
 package xmasfxml;
 
+import java.util.Random;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -15,11 +16,17 @@ import java.io.File;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
+import javafx.animation.TranslateTransitionBuilder;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurve;
 import javafx.util.Duration;
 
@@ -38,16 +45,17 @@ public class FXMLDocumentController implements Initializable {
     private CommandHistory ch;
     private MediaPlayer mediaPlayer;
     private boolean party = false;
-    
+    private Random random = new Random();
+
     @FXML
     private Group ornamentsGroup;
     @FXML
     private Group lightsGroup;
     @FXML
     private Group presentsGroup;
-    @FXML 
+    @FXML
     private Group lightsGroupFlashing;
-    
+
     @FXML
     private ImageView treeBackground;
     @FXML
@@ -63,7 +71,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private ImageView santaPic;
     @FXML
+    private AnchorPane anchorPane;
+    @FXML
     Button exitBtn;
+
     @FXML
     private void exitSystem() {
         System.exit(0);
@@ -75,7 +86,7 @@ public class FXMLDocumentController implements Initializable {
         this.toggleOrnaments();
         if (toggled) {
             showOrnaments();
-            
+
             // check if other toggle is on, then auto set the toggle all to true;
             if (this.lightsToggleBtn.selectedProperty().asObject().getValue()
                     && this.presentsToggleBtn.selectedProperty().asObject().getValue()) {
@@ -83,7 +94,7 @@ public class FXMLDocumentController implements Initializable {
             }
         } else {
             hideOrnaments();
-            if(this.addAllToggleBtn.selectedProperty().asObject().getValue()){
+            if (this.addAllToggleBtn.selectedProperty().asObject().getValue()) {
                 this.addAllToggleBtn.setSelected(false);
             }
         }
@@ -102,7 +113,7 @@ public class FXMLDocumentController implements Initializable {
             }
         } else {
             hideLights();
-            if(this.addAllToggleBtn.selectedProperty().asObject().getValue()){
+            if (this.addAllToggleBtn.selectedProperty().asObject().getValue()) {
                 this.addAllToggleBtn.setSelected(false);
             }
         }
@@ -114,7 +125,7 @@ public class FXMLDocumentController implements Initializable {
         this.togglePresents();
         if (toggled) {
             showPresents();
-            
+
             // check if other toggle is on, then auto set the toggle all to true;
             if (this.lightsToggleBtn.selectedProperty().asObject().getValue()
                     && this.ornamentsToggleBtn.selectedProperty().asObject().getValue()) {
@@ -122,7 +133,7 @@ public class FXMLDocumentController implements Initializable {
             }
         } else {
             hidePresents();
-            if(this.addAllToggleBtn.selectedProperty().asObject().getValue()){
+            if (this.addAllToggleBtn.selectedProperty().asObject().getValue()) {
                 this.addAllToggleBtn.setSelected(false);
             }
         }
@@ -154,23 +165,25 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
-    
+
     @FXML
     public void togglePartyMode() {
-        party = ! party;
-        
+        party = !party;
+
         if (party) {
             playMusic();
-            
+
             animateSanta();
-            
+
             flashingChristmasLight();
             
+            letTheSnowFall();
+
         } else {
             stopMusic();
-            
+
             hideSanta();
-            
+
             stopFlashingChristmasLight();
         }
     }
@@ -257,7 +270,7 @@ public class FXMLDocumentController implements Initializable {
         }
         ch.log(log);
     }
-    
+
     public void playMusic() {
         Media song = new Media(new File("src/jingle-bells-country.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(song);
@@ -271,7 +284,7 @@ public class FXMLDocumentController implements Initializable {
 
         mediaPlayer.play();
     }
-    
+
     public void animateSanta() {
         Image image = new Image("santa1.png");
         santaPic.setImage(image);
@@ -286,7 +299,7 @@ public class FXMLDocumentController implements Initializable {
         transition.setCycleCount(PathTransition.INDEFINITE);
         transition.play();
     }
-    
+
     private void stopMusic() {
         mediaPlayer.stop();
     }
@@ -294,7 +307,7 @@ public class FXMLDocumentController implements Initializable {
     private void hideSanta() {
         santaPic.setVisible(false);
     }
-    
+
     private void flashingChristmasLight() {
         lightsGroupFlashing.setVisible(true);
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), lightsGroupFlashing);
@@ -303,9 +316,41 @@ public class FXMLDocumentController implements Initializable {
         fadeTransition.setCycleCount(Animation.INDEFINITE);
         fadeTransition.play();
     }
-    
+
     public void stopFlashingChristmasLight() {
         lightsGroupFlashing.setVisible(false);
+    }
+
+    public void letTheSnowFall() {
+        Circle c[] = new Circle[2000];
+        
+        for (int i = 0; i < 2000; i++) {
+            c[i] = new Circle(1,1,1);
+            c[i].setRadius(random.nextDouble() * 3);
+            Color color = Color.rgb(255, 255, 255, random.nextDouble());
+            c[i].setFill(color);
+            anchorPane.getChildren().add(c[i]);
+            Raining(c[i]);
+        }
+    }
+
+    public void Raining(Circle c) {
+        c.setCenterX(random.nextInt(950));
+        int time = 10 + random.nextInt(50);
+        Animation walk = TranslateTransitionBuilder.create()
+                .node(c)
+                .fromY(-200)
+                .toY(534 + 200)
+                .toX(random.nextDouble() * c.getCenterX())
+                .duration(Duration.seconds(time))
+                .onFinished(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        Raining(c);
+                    }
+
+                }).build();
+        walk.play();
     }
 
 }
