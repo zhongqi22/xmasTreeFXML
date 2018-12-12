@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.util.Properties;
 
+
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
+
 /**
  *
  * @author Kee Aun
@@ -20,8 +25,11 @@ public class DateTimeReader implements Subject {
     public long time;
     public String period;
     
+    private PropertiesConfiguration configuration;
+
     public DateTimeReader(){
         observers = new ArrayList<Observer>();
+        loadConfig();
     }
     
     @Override
@@ -56,17 +64,24 @@ public class DateTimeReader implements Subject {
     }
     
     public String getPeriod(){
-        Properties p = new Properties();
-        String bgProperty = "";
-        try{
-            p.load(ClassLoader.getSystemResourceAsStream("christmas.properties"));
-            bgProperty = p.getProperty("Background");
-            System.out.println(bgProperty);
-        } catch (IOException e){
-            System.out.println("Error in properties file");
-        }
-        
+        String bgProperty = getProperty("Background");
+        System.out.println(bgProperty);
         return bgProperty;
+    }
+    
+    public String getProperty(final String key) {
+        configuration.reload();
+        return (String)configuration.getProperty(key);
+    }
+    
+    public void loadConfig () {
+        try {
+            configuration = new PropertiesConfiguration("christmas.properties");
+            configuration.setReloadingStrategy(new FileChangedReloadingStrategy());
+ 
+        } catch (ConfigurationException e) {
+            System.out.println("Cannot read property");
+        }
     }
     
     public void setPeriod(){
