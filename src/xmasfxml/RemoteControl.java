@@ -11,7 +11,6 @@ public class RemoteControl {
     public RemoteControl() {
         showCommands = new CommandList();
         hideCommands = new CommandList();
-
     }
 
     public void setCommand(Command showCommand, Command hideCommand) {

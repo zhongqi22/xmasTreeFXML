@@ -19,7 +19,7 @@ public class CommandList{
         commands.add(command);
     }
     
-    public Iterator<Command> createIterator() {
-        return commands.iterator();
+    public CommandIterator createIterator() {
+        return new CommandIterator(commands);
     }
 }
