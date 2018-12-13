@@ -83,6 +83,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void onOrnamentToggleChange() {
         Boolean toggled = this.ornamentsToggleBtn.selectedProperty().asObject().getValue();
+        updateTime();
         toggleOrnaments();
         this.toggleOrnaments();
         if (toggled) {
@@ -104,6 +105,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void onLightToggleChange() {
         Boolean toggled = this.lightsToggleBtn.selectedProperty().asObject().getValue();
+        updateTime();
         toggleLights();
         this.toggleLights();
         if (toggled) {
